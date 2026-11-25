@@ -57,6 +57,14 @@ export default function App() {
     <div className="scroll-progress"><span style={{ transform:'scaleX('+progress+')' }}/></div>
     <div className="tour-counter"><span>SCROLL TO TOUR</span><strong>0{current+1} <i>/ 07</i></strong></div>
     {chapters.map((item,index)=><Chapter key={item.id} item={item} index={index}/>)}
+    <section className="spline-tour" id="model-tour">
+      <div className="spline-tour-copy">
+        <span className="chapter-kicker"><i/> EXPLORE THE MODEL</span>
+        <h2>Take a closer<br/>look at <em>LUXORA.</em></h2>
+        <p>Rotate and explore the resort model. The main journey above remains scroll-driven; this interactive model gives you a hands-on overview.</p>
+      </div>
+      <div className="spline-frame"><iframe title="LUXORA interactive 3D resort model" src="https://my.spline.design/luxoraimmersiveresorttour-omFMGEKk7UkPfML27P8zuU1C/" frameBorder="0" width="100%" height="100%" allow="fullscreen; autoplay; xr-spatial-tracking" /></div>
+    </section>
     <section className="contact-chapter" id="contact">
       <div className="contact-panel">
         <span className="chapter-kicker"><i/> 08 — YOUR ESCAPE STARTS HERE</span>
