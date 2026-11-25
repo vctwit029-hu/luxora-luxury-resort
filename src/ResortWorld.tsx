@@ -54,7 +54,7 @@ function CameraPath() {
     activeCamera.position.lerp(desired.current, 1 - Math.exp(-delta * 2.5));
     look.current.lerp(target.current, 1 - Math.exp(-delta * 3));
     activeCamera.lookAt(look.current);
-    state.camera.updateProjectionMatrix();
+    activeCamera.updateProjectionMatrix();
   });
   return null;
 }
