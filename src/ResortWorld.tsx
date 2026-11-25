@@ -1,5 +1,5 @@
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, Float, Sparkles } from '@react-three/drei';
+import { Environment, Sparkles } from '@react-three/drei';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 
@@ -17,7 +17,6 @@ const chapters = [
 function smoothstep(t: number) { return t * t * (3 - 2 * t); }
 
 function CameraPath() {
-  const camera = useRef<THREE.PerspectiveCamera>(null);
   const desired = useRef(new THREE.Vector3());
   const target = useRef(new THREE.Vector3());
   const look = useRef(new THREE.Vector3());
@@ -33,7 +32,7 @@ function CameraPath() {
   }, []);
 
   useFrame((state, delta) => {
-    if (!camera.current) return;
+    const activeCamera = state.camera as THREE.PerspectiveCamera;
     const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     const raw = reduced ? 0.04 : THREE.MathUtils.clamp(window.scrollY / max, 0, 1);
     progress.current = THREE.MathUtils.damp(progress.current, raw, reduced ? 12 : 3.2, delta);
@@ -52,9 +51,9 @@ function CameraPath() {
       THREE.MathUtils.lerp(a.target[1], b.target[1], t),
       THREE.MathUtils.lerp(a.target[2], b.target[2], t)
     );
-    camera.current.position.lerp(desired.current, 1 - Math.exp(-delta * 2.5));
+    activeCamera.position.lerp(desired.current, 1 - Math.exp(-delta * 2.5));
     look.current.lerp(target.current, 1 - Math.exp(-delta * 3));
-    camera.current.lookAt(look.current);
+    activeCamera.lookAt(look.current);
     state.camera.updateProjectionMatrix();
   });
   return null;
