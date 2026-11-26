@@ -5,3 +5,14 @@
 
 /* Photorealistic cinematic journey layer */
 .resort-journey-video{position:fixed;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;opacity:0;transition:opacity .8s ease;background:#14232b}.resort-journey-video.ready{opacity:1}.world-vignette{z-index:1}.chapter,.contact-chapter,.spline-tour,.immersive-footer{z-index:2}
+
+/* One-gesture opening film, matching the Catherine-site interaction */
+html.luxora-film-playing,body.luxora-film-playing{overflow:hidden!important;overscroll-behavior:none}
+.resort-film-stage{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;opacity:1;transition:opacity 1s ease;background:#10232b}
+.resort-film-stage .resort-journey-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:1}
+.resort-film-stage:not(.ready) .resort-journey-video{opacity:0}
+.resort-film-stage.complete{opacity:0}
+.film-scroll-prompt{position:absolute;left:50%;bottom:9vh;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;color:#f5f0e7;text-align:center;font-size:9px;letter-spacing:2.4px;text-shadow:0 2px 14px #000;white-space:nowrap}
+.film-scroll-prompt span{font-size:22px;line-height:1;animation:film-scroll-bob 1.5s ease-in-out infinite}
+@keyframes film-scroll-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+@media(prefers-reduced-motion:reduce){.film-scroll-prompt span{animation:none}}
