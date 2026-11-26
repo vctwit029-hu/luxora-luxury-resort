@@ -91,7 +91,7 @@ export default function ResortJourneyVideo() {
       >
         <source src="/videos/luxora-resort-journey.mp4" type="video/mp4" />
       </video>
-      {!complete && <div className="film-scroll-prompt">{playing ? 'YOUR JOURNEY IS BEGINNING' : 'SCROLL ONCE TO BEGIN THE JOURNEY'}<span>↓</span></div>}
+      {/* The opening screen is intentionally video-only: no text or controls. */}
     </div>
   );
 }
