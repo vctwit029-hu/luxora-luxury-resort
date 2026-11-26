@@ -13,9 +13,19 @@ const chapters = [
   { id:'overview', number:'07', label:'THE FULL RESORT', title:'See the whole story.', accent:'One place. Many ways to feel away.', copy:'From the arrival court to the pool, villas, dining and wellness spaces, explore the complete LUXORA masterplan.' }
 ];
 
+const chapterImages = [
+  { src:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=85', alt:'Luxury resort entrance and arrival pavilion' },
+  { src:'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1800&q=85', alt:'Elegant luxury bedroom suite' },
+  { src:'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=1800&q=85', alt:'Resort infinity swimming pool' },
+  { src:'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1800&q=85', alt:'Private tropical villa' },
+  { src:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1800&q=85', alt:'Fine dining restaurant setting' },
+  { src:'https://images.unsplash.com/photo-1540555700478-4be289fbe781?auto=format&fit=crop&w=1800&q=85', alt:'Luxury spa and wellness retreat' },
+  { src:'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1800&q=85', alt:'Tropical ocean and resort coastline' }
+];
+
 function Chapter({ item, index }: { item: typeof chapters[number]; index: number }) {
   return <section className={'chapter chapter-' + index} id={item.id}>
-    <div className="chapter-card">
+    <div className="chapter-image"><img src={chapterImages[index].src} alt={chapterImages[index].alt} loading={index===0?"eager":"lazy"}/></div>\n    <div className="chapter-card">
       <span className="chapter-kicker"><i /> {item.number} — {item.label}</span>
       <h2>{item.title}<br/><em>{item.accent}</em></h2>
       <p>{item.copy}</p>
