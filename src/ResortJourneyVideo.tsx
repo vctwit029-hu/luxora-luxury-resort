@@ -1,59 +1,97 @@
 import { useEffect, useRef, useState } from 'react';
 
 /**
- * Scroll-scrubbed master film for the LUXORA resort tour.
- * Add the optimized master MP4 at public/videos/luxora-resort-journey.mp4.
- * The procedural Three.js resort remains underneath as a graceful fallback.
+ * LUXORA opening film: one scroll gesture starts the complete resort journey.
+ * The page remains on the opening scene while the film plays, then normal
+ * page scrolling is released for the resort chapters below.
  */
 export default function ResortJourneyVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const started = useRef(false);
   const [ready, setReady] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [complete, setComplete] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    let touchY = 0;
 
-    let frame = 0;
-    const syncToScroll = () => {
-      if (frame) cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-        if (Number.isFinite(video.duration) && video.duration > 0 && video.readyState >= 1) {
-          const nextTime = progress * Math.max(0, video.duration - 0.08);
-          if (Math.abs(video.currentTime - nextTime) > 0.09) {
-            try { video.currentTime = nextTime; } catch { /* wait for metadata / seekable range */ }
-          }
-        }
+    const unlock = () => {
+      document.documentElement.classList.remove('luxora-film-playing');
+      document.body.classList.remove('luxora-film-playing');
+      setPlaying(false);
+      setComplete(true);
+    };
+
+    const startFilm = () => {
+      if (started.current || complete || !ready) return;
+      started.current = true;
+      setPlaying(true);
+      document.documentElement.classList.add('luxora-film-playing');
+      document.body.classList.add('luxora-film-playing');
+      video.currentTime = 0;
+      const result = video.play();
+      if (result) result.catch(() => {
+        started.current = false;
+        document.documentElement.classList.remove('luxora-film-playing');
+        document.body.classList.remove('luxora-film-playing');
+        setPlaying(false);
       });
     };
 
-    video.addEventListener('loadedmetadata', syncToScroll);
-    window.addEventListener('scroll', syncToScroll, { passive: true });
-    window.addEventListener('resize', syncToScroll);
-    syncToScroll();
-
-    return () => {
-      if (frame) cancelAnimationFrame(frame);
-      video.removeEventListener('loadedmetadata', syncToScroll);
-      window.removeEventListener('scroll', syncToScroll);
-      window.removeEventListener('resize', syncToScroll);
+    const onWheel = (event: WheelEvent) => {
+      if (complete) return;
+      event.preventDefault();
+      if (event.deltaY > 0) startFilm();
     };
-  }, []);
+    const onTouchStart = (event: TouchEvent) => {
+      touchY = event.touches[0]?.clientY ?? 0;
+    };
+    const onTouchMove = (event: TouchEvent) => {
+      if (complete) return;
+      event.preventDefault();
+      const y = event.touches[0]?.clientY ?? touchY;
+      if (touchY - y > 8) startFilm();
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (complete) return;
+      if (['ArrowDown', 'PageDown', ' ', 'Spacebar'].includes(event.key)) {
+        event.preventDefault();
+        startFilm();
+      }
+    };
+
+    video.addEventListener('ended', unlock);
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      video.removeEventListener('ended', unlock);
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('keydown', onKeyDown);
+      document.documentElement.classList.remove('luxora-film-playing');
+      document.body.classList.remove('luxora-film-playing');
+    };
+  }, [ready, complete]);
 
   return (
-    <video
-      ref={videoRef}
-      className={ready ? 'resort-journey-video ready' : 'resort-journey-video'}
-      muted
-      playsInline
-      preload="auto"
-      aria-hidden="true"
-      tabIndex={-1}
-      onLoadedData={() => setReady(true)}
-      onError={() => setReady(false)}
-    >
-      <source src="/videos/luxora-resort-journey.mp4" type="video/mp4" />
-    </video>
+    <div className={`resort-film-stage ${ready ? 'ready' : ''} ${playing ? 'playing' : ''} ${complete ? 'complete' : ''}`}>
+      <video
+        ref={videoRef}
+        className="resort-journey-video"
+        muted
+        playsInline
+        preload="auto"
+        aria-label="LUXORA cinematic resort journey"
+        onLoadedData={() => setReady(true)}
+      >
+        <source src="/videos/luxora-resort-journey.mp4" type="video/mp4" />
+      </video>
+      {!complete && <div className="film-scroll-prompt">{playing ? 'YOUR JOURNEY IS BEGINNING' : 'SCROLL ONCE TO BEGIN THE JOURNEY'}<span>↓</span></div>}
+    </div>
   );
 }
