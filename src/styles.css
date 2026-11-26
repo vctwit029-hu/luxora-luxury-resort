@@ -16,3 +16,13 @@ html.luxora-film-playing,body.luxora-film-playing{overflow:hidden!important;over
 .film-scroll-prompt span{font-size:22px;line-height:1;animation:film-scroll-bob 1.5s ease-in-out infinite}
 @keyframes film-scroll-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
 @media(prefers-reduced-motion:reduce){.film-scroll-prompt span{animation:none}}
+
+/* Editorial resort photography inside each scroll chapter */
+.chapter{isolation:isolate;overflow:hidden}
+.chapter-image{position:absolute;z-index:-1;top:12%;right:8%;bottom:12%;width:min(58vw,900px);overflow:hidden;border:1px solid rgba(255,255,255,.24);box-shadow:0 28px 90px rgba(0,0,0,.42)}
+.chapter-image:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,17,22,.36),transparent 55%),linear-gradient(0deg,rgba(7,17,22,.22),transparent 45%)}
+.chapter-image img{width:100%;height:100%;display:block;object-fit:cover;filter:saturate(.82) contrast(1.04);transform:scale(1.025);transition:transform 1.2s ease}
+.chapter:hover .chapter-image img{transform:scale(1.07)}
+.chapter:nth-of-type(even) .chapter-image{right:auto;left:8%}
+.chapter-card{position:relative;z-index:1}
+@media(max-width:650px){.chapter-image{top:13%;left:5%!important;right:5%!important;bottom:25%;width:90%;opacity:.92}.chapter-card{margin-top:auto!important}.chapter-0 .chapter-image{top:15%;bottom:30%}}
