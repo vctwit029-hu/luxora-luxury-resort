@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { ArrowDown, ArrowRight, ArrowUpRight, Menu, X, Waves, Compass, Leaf, Utensils, Sparkles, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ResortWorld from './ResortWorld';
-import ResortJourneyVideo from './ResortJourneyVideo';
 
 const chapters = [
   { id:'arrival', number:'01', label:'THE APPROACH', title:'A world apart.', accent:'A world of your own.', copy:'Leave the everyday behind. Follow the palms, the light and the quiet curve of the coast.' },
@@ -46,7 +45,6 @@ export default function App() {
   const current = Math.min(6, Math.floor(progress * 7));
   return <main className="immersive-site">
     <ResortWorld />
-    <ResortJourneyVideo />
     <div className="world-vignette" />
     <header className="immersive-nav">
       <a className="luxora-brand" href="#arrival" onClick={e=>{e.preventDefault();go('arrival')}}><span className="brand-monogram">L</span><span>LUXORA<small>PRIVATE RESORT & RETREAT</small></span></a>
