@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowDown, ArrowRight, ArrowUpRight, Menu, X, Waves, Compass, Leaf, Utensils, Sparkles, MapPin } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { ArrowDown, ArrowRight, ArrowUpRight, Menu, X, Sparkles } from 'lucide-react';
 import ResortJourneyVideo from './ResortJourneyVideo';
 
 const chapters = [
@@ -9,8 +8,7 @@ const chapters = [
   { id:'pool', number:'03', label:'THE HEART OF LUXORA', title:'Where water meets sky.', accent:'Find your horizon.', copy:'The central infinity pool is the resort’s meeting point — a place to drift between sunlight, shade and stillness.' },
   { id:'villas', number:'04', label:'PRIVATE RESIDENCES', title:'Your own quiet corner.', accent:'Space to simply be.', copy:'Low-rise private villas sit among tropical gardens, with generous terraces and a softer rhythm of living.' },
   { id:'dining', number:'05', label:'TASTE & GATHER', title:'A table worth travelling for.', accent:'Seasonal. Thoughtful. Yours.', copy:'An intimate dining pavilion brings together local ingredients, considered menus and evenings that unfold slowly.' },
-  { id:'wellness', number:'06', label:'RESTORE & RENEW', title:'Return to yourself.', accent:'A ritual of restoration.', copy:'A secluded wellness pavilion and garden paths invite you to pause, breathe and reset.' },
-  { id:'overview', number:'07', label:'THE FULL RESORT', title:'See the whole story.', accent:'One place. Many ways to feel away.', copy:'From the arrival court to the pool, villas, dining and wellness spaces, explore the complete LUXORA masterplan.' }
+  { id:'overview', number:'06', label:'THE FULL RESORT', title:'See the whole story.', accent:'One place. Many ways to feel away.', copy:'From the arrival court to the pool, villas and dining spaces, discover the complete LUXORA experience.' }
 ];
 
 const chapterImages = [
@@ -19,7 +17,6 @@ const chapterImages = [
   { src:'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=1800&q=85', alt:'Resort infinity swimming pool' },
   { src:'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1800&q=85', alt:'Private tropical villa' },
   { src:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1800&q=85', alt:'Fine dining restaurant setting' },
-  { src:'https://images.unsplash.com/photo-1540555700478-4be289fbe781?auto=format&fit=crop&w=1800&q=85', alt:'Luxury spa and wellness retreat' },
   { src:'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1800&q=85', alt:'Tropical ocean and resort coastline' }
 ];
 
@@ -30,7 +27,7 @@ function Chapter({ item, index }: { item: typeof chapters[number]; index: number
       <h2>{item.title}<br/><em>{item.accent}</em></h2>
       <p>{item.copy}</p>
       {index === 0 && <a className="chapter-link" href="#welcome">Begin the journey <ArrowDown size={15}/></a>}
-      {index === 6 && <a className="chapter-link" href="#contact">Plan your stay <ArrowUpRight size={15}/></a>}
+      {index === chapters.length - 1 && <a className="chapter-link" href="#contact">Plan your stay <ArrowUpRight size={15}/></a>}
     </div>
   </section>;
 }
@@ -52,7 +49,7 @@ export default function App() {
   }, []);
   const go = (id:string) => { document.getElementById(id)?.scrollIntoView({ behavior:'smooth' }); setMenu(false); };
   const updateForm = (e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => setForm({ ...form, [e.target.name]:e.target.value });
-  const current = Math.min(6, Math.floor(progress * 7));
+  const current = Math.min(chapters.length - 1, Math.floor(progress * chapters.length));
   return <main className="immersive-site">
     <ResortJourneyVideo />
     <div className="world-vignette" />
@@ -65,16 +62,8 @@ export default function App() {
       <button className="mobile-menu" aria-label="Toggle navigation" onClick={()=>setMenu(!menu)}>{menu?<X/>:<Menu/>}</button>
     </header>
     <div className="scroll-progress"><span style={{ transform:'scaleX('+progress+')' }}/></div>
-    <div className="tour-counter"><span>SCROLL TO TOUR</span><strong>0{current+1} <i>/ 07</i></strong></div>
+    <div className="tour-counter"><span>SCROLL TO TOUR</span><strong>0{current+1} <i>/ 06</i></strong></div>
     {chapters.map((item,index)=><Chapter key={item.id} item={item} index={index}/>)}
-    <section className="spline-tour" id="model-tour">
-      <div className="spline-tour-copy">
-        <span className="chapter-kicker"><i/> EXPLORE THE MODEL</span>
-        <h2>Take a closer<br/>look at <em>LUXORA.</em></h2>
-        <p>Rotate and explore the resort model. The main journey above remains scroll-driven; this interactive model gives you a hands-on overview.</p>
-      </div>
-      <div className="spline-frame"><iframe title="LUXORA interactive 3D resort model" src="https://my.spline.design/luxoraimmersiveresorttour-omFMGEKk7UkPfML27P8zuU1C/" frameBorder="0" width="100%" height="100%" allow="fullscreen; autoplay; xr-spatial-tracking" /></div>
-    </section>
     <section className="contact-chapter" id="contact">
       <div className="contact-panel">
         <span className="chapter-kicker"><i/> 08 — YOUR ESCAPE STARTS HERE</span>
