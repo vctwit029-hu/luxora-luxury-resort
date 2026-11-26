@@ -76,6 +76,7 @@ function Palm({ x, z, scale = 1, rotation = 0 }: { x: number; z: number; scale?:
           <meshStandardMaterial color="#a4a06a" />
         </mesh>
       </group>)}
+    </group>
   </group>;
 }
 
