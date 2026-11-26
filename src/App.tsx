@@ -66,7 +66,7 @@ export default function App() {
     {chapters.map((item,index)=><Chapter key={item.id} item={item} index={index}/>)}
     <section className="contact-chapter" id="contact">
       <div className="contact-panel">
-        <span className="chapter-kicker"><i/> 08 — YOUR ESCAPE STARTS HERE</span>
+        <span className="chapter-kicker"><i/> 07 — YOUR ESCAPE STARTS HERE</span>
         <h2>Make room<br/>for <em>you.</em></h2>
         <p>Tell us a little about the stay you have in mind. Our reservations team will be delighted to help shape your LUXORA experience.</p>
         {formSent ? <div className="enquiry-success"><Sparkles/><strong>Your enquiry is ready.</strong><span>This is a concept demo — no booking was made and no message was sent.</span><button onClick={()=>setFormSent(false)}>Send another enquiry</button></div> :
