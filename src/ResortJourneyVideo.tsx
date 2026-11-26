@@ -31,6 +31,8 @@ export default function ResortJourneyVideo() {
       document.documentElement.classList.add('luxora-film-playing');
       document.body.classList.add('luxora-film-playing');
       video.currentTime = 0;
+      video.playbackRate = 1.25;
+      video.defaultPlaybackRate = 1.25;
       const result = video.play();
       if (result) result.catch(() => {
         started.current = false;
