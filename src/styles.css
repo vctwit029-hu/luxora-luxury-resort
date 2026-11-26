@@ -26,3 +26,10 @@ html.luxora-film-playing,body.luxora-film-playing{overflow:hidden!important;over
 .chapter:nth-of-type(even) .chapter-image{right:auto;left:8%}
 .chapter-card{position:relative;z-index:1}
 @media(max-width:650px){.chapter-image{top:13%;left:5%!important;right:5%!important;bottom:25%;width:90%;opacity:.92}.chapter-card{margin-top:auto!important}.chapter-0 .chapter-image{top:15%;bottom:30%}}
+
+/* Opening screen: show only the resort film until it finishes. */
+.resort-film-stage:not(.complete) ~ .world-vignette,
+.resort-film-stage:not(.complete) ~ .immersive-nav,
+.resort-film-stage:not(.complete) ~ .scroll-progress,
+.resort-film-stage:not(.complete) ~ .tour-counter{display:none!important}
+.resort-film-stage:not(.complete){z-index:50;pointer-events:none}
